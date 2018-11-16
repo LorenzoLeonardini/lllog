@@ -31,7 +31,7 @@ func TestFatal(t *testing.T) {
 
 func TestFormat(t *testing.T) {
 	logger := New("Format Example")
-	logger.setFormat("02 January 2006 - 15:04")
+	logger.SetFormat("02 January 2006 - 15:04")
 	logger.Log("Loggers can also have time/date prefix\n")
 	logger.Warn("It is formatted using the golang time format\n")
 }
@@ -43,6 +43,16 @@ func TestDisableConsole(t *testing.T) {
 	logger.Log("You can't see me!\n")
 	logger.WriteToConsole(true)
 	logger.Log("Would you believe there was something before me?\n")
+}
+
+func TestFileLog(t *testing.T) {
+	logger := New("File logger")
+	logger.LogToFile("logs")
+	logger.Log("This log will be saved to a file :)\n")
+	logger.SetFormat("02 January 2006 - 15:04")
+	logger.Warn("Now we have a timestamp :)\n")
+	logger.SetOutputFormatter(JSONFormatter)
+	logger.Fatal("This is sick!\n")
 }
 
 // Just want some whitespaces before the "PASS" print
