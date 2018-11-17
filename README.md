@@ -49,7 +49,7 @@ logger.SetFormat("02 January 2006 - 15:04")
 
 ### Custom color scheme
 
-Since each of us has different taste in color you can edit the color for each log level. (You clear must choose a `color.Attribute` from the [fatih/color](https://github.com/fatih/color) library)
+Since each of us has different taste in color you can edit the color for each log level. (You clearly must choose a `color.Attribute` from the [fatih/color](https://github.com/fatih/color) library)
 
 ```golang
 logger.SetErrColor(color.FgHiGreen)
