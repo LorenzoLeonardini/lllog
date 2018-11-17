@@ -13,7 +13,6 @@ import (
 type Logger struct {
 	name           string
 	format         string
-	hasFormat      bool
 	colors         map[string]func(...interface{}) string
 	file           *os.File
 	disableConsole bool
@@ -29,6 +28,8 @@ type LogMessage struct {
 	Format    string
 	Name      string
 }
+
+var fileMutex *sync.Mutex
 
 func ConsoleFromatter(log *LogMessage) string {
 	if log.Format != "" {
@@ -65,8 +66,13 @@ func (l *Logger) LogToFile(path string) {
 	if !strings.HasSuffix(path, "/") {
 		path += "/"
 	}
+	if fileMutex == nil {
+		fileMutex = &sync.Mutex{}
+	}
+	fileMutex.Lock()
 	l.file, _ = os.OpenFile(path+time.Now().Format("2006-01-02")+".log", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	l.file.WriteString("\n\n")
+	fileMutex.Unlock()
 }
 
 func (l *Logger) SetLogColor(c color.Attribute) {
@@ -93,7 +99,9 @@ func (l *Logger) golog(log LogMessage) string {
 	}
 	ret := l.formatter(&log)
 	if l.file != nil {
+		fileMutex.Lock()
 		l.file.WriteString(ret)
+		fileMutex.Unlock()
 	}
 	l.mutex.Unlock()
 	return ret
@@ -120,12 +128,11 @@ func (l *Logger) WriteToConsole(enabled bool) {
 }
 
 func (l *Logger) SetFormat(format string) {
-	l.hasFormat = true
 	l.format = format
 }
 
 func (l *Logger) getHeader() string {
-	if l.hasFormat {
+	if l.format != "" {
 		return "[" + time.Now().Format(l.format) + "] "
 	}
 	return ""
