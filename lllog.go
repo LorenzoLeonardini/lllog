@@ -69,6 +69,9 @@ func (l *Logger) LogToFile(path string) {
 	if fileMutex == nil {
 		fileMutex = &sync.Mutex{}
 	}
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		os.MkdirAll(path, os.ModePerm);
+	}
 	fileMutex.Lock()
 	l.file, _ = os.OpenFile(path+time.Now().Format("2006-01-02")+".log", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	l.file.WriteString("\n\n")
