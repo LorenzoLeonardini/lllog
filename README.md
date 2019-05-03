@@ -1,4 +1,4 @@
-# lllog [![Build Status](https://travis-ci.org/LorenzoLeonardini/lllog.svg?branch=master)](https://travis-ci.org/LorenzoLeonardini/lllog)
+# lllog [![Build Status](https://travis-ci.org/LorenzoLeonardini/lllog.svg?branch=master)](https://travis-ci.org/LorenzoLeonardini/lllog) [![codecov](https://codecov.io/gh/LorenzoLeonardini/lllog/branch/master/graph/badge.svg)](https://codecov.io/gh/LorenzoLeonardini/lllog)
 
 Simple and powerful logger for Golang.
 
